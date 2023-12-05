@@ -1,9 +1,16 @@
 #Construtor
 def __init__(self, nome, interesses, artigos_disponiveis):
+    self.nome = nome
+    self.interesses = interesses
+    self.artigos_disponiveis = artigos_disponiveis
 #Altera os interesses e/ou os artigos de um utilizador
 def editar_conta(self, novos_interesses, novos_artigos):
+    self.interesses = novos_interesses
+    self.artigos_disponiveis = novos_artigos
 #Adiciona uma nova avaliação, podendo incluir um comentário
 def deixar_avaliacao(self, estrelas, comentario):
+    self.estrelas = estrelas
+    self.comentario = comentario
 #Apresenta todas as avaliações e comentários
 def listar_avaliacoes(self):
 #Apresenta todos os interesses

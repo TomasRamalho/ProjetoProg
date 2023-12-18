@@ -24,16 +24,24 @@ def mostrar_pycoins(self):
 
 #Construtor
 def __init__(self, nome, preco, tipologia, quantidade):
+    self.nome = nome
+    self.preco = preco
+    self.tipologia = tipologia
+    self.quantidade = quantidade
 #Altera o nome de um artigo para o novo nome recebido
 def editar_nome(self, nome):
+    self.nome = novo_nome
 #Altera o preço de um artigo de acordo com a percentagem dada
 def ajustar_preco(self, percentagem_alteracao):
+    self.
 #Altera o preço para o novo preço recebido
 def editar_preco(self, preco):
+    self.preco = novo_preco
 #Apresenta o preço do artigo
 def mostrar_preco(self):
 #Altera a quantidade
 def editar_quantidade(self, nova_quantidade):
+    self.quantidade = nova_quantidade
 #Apresenta a quantidade do artigo
 def mostrar_quantidade(self):
 #Altera a tipologia
@@ -78,5 +86,3 @@ def adicionar_artigo(self, artigo):
 def remover_artigo(self, artigo):
 #Mostra o nome, preço e quantidade do artigo recebido
 def mostrar_artigo(self, artigo):
-
-    a

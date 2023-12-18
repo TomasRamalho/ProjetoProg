@@ -82,7 +82,10 @@ def main():
 def __init__(self):
 #Adiciona um novo artigo
 def adicionar_artigo(self, artigo):
+    self.artigo = adicionar_artigo
 #Elimina um artigo
 def remover_artigo(self, artigo):
+    self.artigo = remover_artigo
 #Mostra o nome, preço e quantidade do artigo recebido
 def mostrar_artigo(self, artigo):
+    mostrar_artigo = artigo

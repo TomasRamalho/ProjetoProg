@@ -15,12 +15,21 @@ def deixar_avaliacao(self, estrelas, comentario):
 def listar_avaliacoes(self):
 #Apresenta todos os interesses
 def mostrar_interesses(self):
+    print("Introduza um nome de utilizador para consultar os seus interesses:")
+    mostrar_interesses = input("")
+    print(f"Interesses de {self.mostrar_insteresses}: {', '.join(self.interesses)}")
 #Apresenta todos os artigos
 def mostrar_artigos(self):
 #Altera o número de pycoins
 def alterar_pycoins(self, numero_pycoins):
+    self.numero_pycoins = numero_pycoins
+    print(f"{self.utilizador} agora possui {self.pycoins} PyCoins.")
 #Apresenta o número de pycoins
 def mostrar_pycoins(self):
+    print("Introduza um nome de utilizador para consultar os seus Pycoins:")
+    mostrar_pycoins_nome = input("")
+    print(f"{self.nome} tem {self.pycoins} PyCoins.")
+        
 
 #Construtor
 def __init__(self, nome, preco, tipologia, quantidade):
@@ -31,6 +40,9 @@ def __init__(self, nome, preco, tipologia, quantidade):
 #Altera o nome de um artigo para o novo nome recebido
 def editar_nome(self, nome):
     self.nome = novo_nome
+     if artigo in self.artigos_disponiveis
+        preco = self.artigos_disponiveis[artigo]
+
 #Altera o preço de um artigo de acordo com a percentagem dada
 def ajustar_preco(self, percentagem_alteracao):
     self.

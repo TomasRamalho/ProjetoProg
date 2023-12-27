@@ -104,7 +104,7 @@ def mostrar_artigo(self, artigo):
 def main():
     FeiraVirtual = FeiraVirtual()
     user = Utilizador(input[""], [""], [""])
-    print("Bem-vindo/a à Feira Virtual. Pretende aceder a:\1 - Utilizadores\2 - Artigos\3 - Mercado")
+    print("Bem-vindo/a à Feira Virtual. Pretende aceder a:\n1 - Utilizadores\n2 - Artigos\n3 - Mercado")
     opcao1 = int(input())
     if opcao1 == 1:
         print("Pretende aceder a:\n1 – Registo de utilizadores\n2 – Alteração de um utilizador\n3 – Eliminação de conta de um utilizador\n4 – Lista de utilizadores\n5 – Mostrar artigos de um utilizador\n6 – Mostrar interesses de um utilizador\n7 – Mostrar Pycoins de um utilizador\nV – Voltar atrás\nS – Sair")
@@ -128,7 +128,7 @@ def main():
             utilizador.mostrar_interesses()
         if opcao11 == 7:
         if opcao21 == "S":
-            print("Bem-vindo/a à Feira Virtual. Pretende aceder a:\1 - Utilizadores\2 - Artigos\3 - Mercado")
+            print("Bem-vindo/a à Feira Virtual. Pretende aceder a:\n1 - Utilizadores\n2 - Artigos\n3 - Mercado")
             opcao1 = input("")
         if opcao21 == "V":
             quit()
@@ -140,7 +140,7 @@ def main():
         if opcao21 == 2:
         if opcao21 == 3:
         if opcao21 == "S":
-            print("Bem-vindo/a à Feira Virtual. Pretende aceder a:\1 - Utilizadores\2 - Artigos\3 - Mercado")
+            print("Bem-vindo/a à Feira Virtual. Pretende aceder a:\n1 - Utilizadores\n2 - Artigos\n3 - Mercado")
             opcao1 = input("")
         if opcao21 == "V":
             quit()
@@ -155,15 +155,15 @@ def main():
         if opcao31 == 3:
             print("Artigos Disponíveis no Mercado:\n1. xxx \n2. xxx \n3. xxx")
         if opcao31 == "S":
-            print("Bem-vindo/a à Feira Virtual. Pretende aceder a:\1 - Utilizadores\2 - Artigos\3 - Mercado")
+            print("Bem-vindo/a à Feira Virtual. Pretende aceder a:\n1 - Utilizadores\n2 - Artigos\n3 - Mercado")
             opcao1 = input("")
         if opcao31 == "V":
             quit()
 
     else:
-        print("Bem-vindo/a à Feira Virtual. Pretende aceder a:\1 - Utilizadores\2 - Artigos\3 - Mercado")
+        print("Bem-vindo/a à Feira Virtual. Pretende aceder a:\n1 - Utilizadores\n2 - Artigos\n3 - Mercado")
         opcao1 = input("")
     
-    
+
 if __name__=="__main__":
     main()

@@ -127,10 +127,10 @@ def main():
             for utilizador in self.nome:
             utilizador.mostrar_interesses()
         if opcao11 == 7:
-        if opcao21 == "S":
+        if opcao21 == "V":
             print("Bem-vindo/a à Feira Virtual. Pretende aceder a:\n1 - Utilizadores\n2 - Artigos\n3 - Mercado")
             opcao1 = input("")
-        if opcao21 == "V":
+        if opcao21 == "S":
             quit()
 
     if opcao1 == 2:
@@ -139,10 +139,10 @@ def main():
         if opcao21 == 1:
         if opcao21 == 2:
         if opcao21 == 3:
-        if opcao21 == "S":
+        if opcao21 == "V":
             print("Bem-vindo/a à Feira Virtual. Pretende aceder a:\n1 - Utilizadores\n2 - Artigos\n3 - Mercado")
             opcao1 = input("")
-        if opcao21 == "V":
+        if opcao21 == "S":
             quit()
             
     if opcao1 == 3:
@@ -154,10 +154,10 @@ def main():
         if opcao31 == 2:
         if opcao31 == 3:
             print("Artigos Disponíveis no Mercado:\n1. xxx \n2. xxx \n3. xxx")
-        if opcao31 == "S":
+        if opcao31 == "V":
             print("Bem-vindo/a à Feira Virtual. Pretende aceder a:\n1 - Utilizadores\n2 - Artigos\n3 - Mercado")
             opcao1 = input("")
-        if opcao31 == "V":
+        if opcao31 == "S":
             quit()
 
     else:

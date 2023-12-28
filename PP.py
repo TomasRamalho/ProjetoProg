@@ -102,8 +102,6 @@ def mostrar_artigo(self, artigo):
     mostrar_artigo = artigo
 
 def main():
-    FeiraVirtual = FeiraVirtual()
-    user = Utilizador(input[""], [""], [""])
     print("Bem-vindo/a à Feira Virtual. Pretende aceder a:\n1 - Utilizadores\n2 - Artigos\n3 - Mercado")
     opcao1 = int(input())
     if opcao1 == 1:
@@ -113,56 +111,73 @@ def main():
             print("1 – Registo manual\n2 – Registo por ficheiro")
             opcao12 = input("")
             if opcao12 == 1:
+                pass
             if opcao12 == 2:
-            while opcao12 < 1 or opcao12 > 2:
-                opcao12 = input("")
-        if opcao11 == 2:
-        if opcao11 == 3:
-        if opcao11 == 4:
-        if opcao11 == 5:
+                while opcao12 < 1 or opcao12 > 2:
+                    opcao12 = input("")
+        elif opcao11 == 2:
+            pass
+        elif opcao11 == 3:
+            pass
+        elif opcao11 == 4:
+            pass
+        elif opcao11 == 5:
             print("Introduza um utilizador para consultar os seus artigos:")
             opcao15 = input("")
             print("Artigo: n, Preço: n, Quantidade: n")
-        if opcao11 == 6:
-            for utilizador in self.nome:
-            utilizador.mostrar_interesses()
-        if opcao11 == 7:
-        if opcao21 == "V":
+        elif opcao11 == 6:
+            pass
+        elif opcao11 == 7:
+            pass
+        elif opcao21 := "V":
             print("Bem-vindo/a à Feira Virtual. Pretende aceder a:\n1 - Utilizadores\n2 - Artigos\n3 - Mercado")
             opcao1 = input("")
-        if opcao21 == "S":
+        elif opcao21 := "S":
+            quit()
+        else:
+            print("Opção inálida")
             quit()
 
-    if opcao1 == 2:
+    elif opcao1 == 2:
         print("Pretende aceder a: \n1 – Mostrar preço de um artigo\n2 – Mostrar quantidade de um artigo\n3 – Mostrar tipo de um artigo\nV – Voltar atrás\nS – Sair")
         opcao21 = input("")
         if opcao21 == 1:
-        if opcao21 == 2:
-        if opcao21 == 3:
-        if opcao21 == "V":
+            pass
+        elif opcao21 == 2:
+            pass
+        elif opcao21 == 3:
+            pass
+        elif opcao21 == "V":
             print("Bem-vindo/a à Feira Virtual. Pretende aceder a:\n1 - Utilizadores\n2 - Artigos\n3 - Mercado")
             opcao1 = input("")
-        if opcao21 == "S":
+        elif opcao21 == "S":
+            quit()
+        else:
+            print("Opção inálida")
             quit()
             
-    if opcao1 == 3:
+    elif opcao1 == 3:
         print("Pretende aceder a:\n1 – Adicionar Artigo ao Mercado\n2 – Remover Artigo do Mercado\n3 – Listar Artigos do Mercado\nV – Voltar atrás\nS – Sair")
         opcao31 = input("")
         if opcao31 == 1:
             print("Insira os detalhes do artigo para adicionar ao mercado (nome, tipologia, preço,quantidade):")
             opcao311 = input("")
-        if opcao31 == 2:
-        if opcao31 == 3:
+        elif opcao31 == 2:
+            pass
+        elif opcao31 == 3:
             print("Artigos Disponíveis no Mercado:\n1. xxx \n2. xxx \n3. xxx")
-        if opcao31 == "V":
+        elif opcao31 == "V":
             print("Bem-vindo/a à Feira Virtual. Pretende aceder a:\n1 - Utilizadores\n2 - Artigos\n3 - Mercado")
             opcao1 = input("")
-        if opcao31 == "S":
+        elif opcao31 == "S":
             quit()
+        else:
+            print("Insira os detalhes do artigo para adicionar ao mercado (nome, tipologia, preço,quantidade):")
+            opcao31 = input("")
 
     else:
-        print("Bem-vindo/a à Feira Virtual. Pretende aceder a:\n1 - Utilizadores\n2 - Artigos\n3 - Mercado")
-        opcao1 = input("")
+        print("Opção inválida")
+        quit()
     
 
 if __name__=="__main__":

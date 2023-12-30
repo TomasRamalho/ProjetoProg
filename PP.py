@@ -37,7 +37,8 @@ class Utilizador:
 
     #Apresenta todos os artigos
     def mostrar_artigos(self):
-        print(f": {', '.join(self.artigos_disponiveis)}")
+        print(self.artigos_disponiveis)
+
 
     #Altera o número de pycoins
     def alterar_pycoins(self, numero_pycoins):
@@ -77,7 +78,7 @@ class Artigo:
 
     #Apresenta o preço do artigo
     def mostrar_preco(self):
-        return self.preco
+        print(f"O preço do artigo {self.nome_artigo} é {self.preco}")
 
     #Altera a quantidade
     def editar_quantidade(self, nova_quantidade):
@@ -85,7 +86,7 @@ class Artigo:
 
     #Apresenta a quantidade do artigo
     def mostrar_quantidade(self):
-        return self.quantidade
+        print(f"A quantidade do artigo {self.nome_artigo} é {self.quantidade}")
 
     #Altera a tipologia
     def editar_tipo (self, novo_tipo):
@@ -93,7 +94,7 @@ class Artigo:
 
     #Apresenta a tipologia do artigo
     def mostrar_tipo (self):
-        return self.tipologia
+        print(f"A tipologia do artigo {self.nome_artigo} é {self.tipologia}")
     
     def encontrar_artigo(artigos_disponiveis,nome_artigo):
         for artigos_disponiveis in Artigo:
@@ -135,12 +136,16 @@ class FeiraVirtual:
         for utilizador in self.utilizadores:
             if utilizador.nome == nome_utilizador:
                 self.utilizadores.remove(utilizador)
-                print(f"Utilizador {nome_utilizador} removido com sucesso!")
                 break
 
     #Apresenta todos os artigos disponíveis ordenados por preço
     def listar_artigos(self):
-        pass
+        print("Lista de artigos:")
+        
+        n = 1
+        for artigo in self.artigos:
+            print(f"{n} - Nome: {artigo.nome_artigo}, Preço: {artigo.preco}, Tipologia: {artigo.tipologia}, Quantidade: {artigo.quantidade}")
+            n = n + 1
 
     #Efetua uma compra de um artigo. O comprador e o vendedor são os nomes de dois utilizadores registados
     def comprar_artigo(self, comprador, vendedor, artigo):
@@ -171,19 +176,26 @@ class FeiraVirtual:
     def exportar_utilizadores(self):
         pass
 
-    def mostrar_preco_artigo(self):
-        print("Introduza o nome do artigo que deseja ver o preço:")
-        nome_artigo_input = input("")
-        artigo_selecionado = None
-        for artigo in self.artigos_disponiveis:
-            if artigo.nome_artigo == nome_artigo_input:
-                artigo_selecionado = artigo
+    def mostrar_artigo(self):
+        print("Introduza o nome do utilizador para ver os seus:")
+        nome_utilizador_input = input("")
+        for utilizador in self.utilizadores:
+            if utilizador.nome == nome_utilizador_input:
+                utilizador.mostrar_artigos()
                 break
-        if artigo_selecionado:
-            print(f"O preço do artigo é {artigo_selecionado.mostrar_preco()}")
+                    
+
+    def mostrar_preco_artigo(self, nome_artigo):
+        for artigo in self.artigos_disponiveis:
+            if artigo.nome_artigo == nome_artigo:
+                print(f"O preço do artigo {nome_artigo} é {artigo.preco}")
+                return
+        print(f"Artigo {nome_artigo} não encontrado.")
+
 
     def mostrar_tipologia_artigo(self):
-        nome_artigo_input = input("Introduza o nome do artigo que deseja ver a tipologia: ")
+        print("Introduza o nome do artigo que deseja ver a tipologia: ")
+        nome_artigo_input = input("")
         artigo_selecionado = None
         for artigo in self.artigos_disponiveis:
             if artigo.nome_artigo == nome_artigo_input:
@@ -192,17 +204,12 @@ class FeiraVirtual:
 
         if artigo_selecionado:
             print(f"A tipologia do artigo é {artigo_selecionado.mostrar_tipo()}")
-        
-    def remover_artigo_do_mercado(self):
-        nome_artigo_input = input("Introduza o nome do artigo que deseja remover do mercado: ")
-        artigo_selecionado = None
-        for artigo in self.mercado.mercado:
-            if artigo.nome_artigo == nome_artigo_input:
-                artigo_selecionado = artigo
-                break
 
-        if artigo_selecionado:
-            self.mercado.remover_artigo(artigo_selecionado)
+    def listar_todos_artigos(self):
+        todos_artigos = []
+        for utilizador in self.utilizadores:
+            todos_artigos.extend(utilizador.artigos_disponiveis)
+        return todos_artigos
 
 class Mercado:
 
@@ -254,7 +261,8 @@ def main():
                     fv.importar_utilizadores(ficheiro)
 
             elif opcao11 == "2":
-                nome_utilizador_input = input("Introduza o nome do utilizador que deseja remover: ")
+                print("Introduza o nome do artigo que deseja alterar: ")
+                nome_utilizador_input = input("")
                 utilizador_selecionado = None
                 for utilizador in fv.utilizadores:
                     if utilizador.nome == nome_utilizador_input:
@@ -275,15 +283,7 @@ def main():
                     print(f"Nome: {utilizador.nome}, Interesses: {', '.join(utilizador.interesses)}")
 
             elif opcao11 == "5":
-                print("Introduza um utilizador para consultar os seus artigos:")
-                nome_utilizador_input = input("")
-                utilizador_selecionado = None
-                for utilizador in fv.utilizadores:
-                    if utilizador.nome == nome_utilizador_input:
-                        utilizador_selecionado = utilizador
-                        break
-                if utilizador_selecionado:
-                    utilizador_selecionado.mostrar_artigos()
+                fv.mostrar_artigo()
 
             elif opcao11 == "6":
                 print("Introduza um nome de utilizador para consultar os seus interesses:")
@@ -323,18 +323,37 @@ def main():
             opcao21 = input("")
 
             if opcao21 == "1":
-                fv.mostrar_preco_artigo()
+                print("Introduza o artigo que deseja ver o preço: ")
+                nome_artigo_input = input("")
+                artigo_selecionado = None
+                for artigo in fv.artigos_disponiveis:
+                    if artigo.nome_artigo == nome_artigo_input:
+                        artigo_selecionado = artigo
+                        break
+                if artigo_selecionado:
+                    artigo_selecionado.mostrar_preco()
                 
 
             elif opcao21 == "2":
-                print("Introduza o artigo que deseja ver a quantidade:")
-                nome_artigo_input = input("")
-                # Encontrar o artigo pelo nome
+                nome_artigo_input = input("Introduza o artigo que deseja ver a quantidade: ")
+                artigo_selecionado = None
                 for artigo in fv.artigos_disponiveis:
-                      pass                  
+                    if artigo.nome_artigo == nome_artigo_input:
+                        artigo_selecionado = artigo
+                        break
+                if artigo_selecionado:
+                    artigo_selecionado.mostrar_quantidade()                 
 
             elif opcao21 == "3":
-                fv.mostrar_tipologia_artigo()
+                print("Introduza o artigo que deseja ver a quantidade: ")
+                nome_artigo_input = input("")
+                artigo_selecionado = None
+                for artigo in fv.artigos_disponiveis:
+                    if artigo.nome_artigo == nome_artigo_input:
+                        artigo_selecionado = artigo
+                        break
+                if artigo_selecionado:
+                    artigo_selecionado.mostrar_quantidade()
 
             elif opcao21 == "V" or opcao21 == "v":
                 opcao1 = None
@@ -352,7 +371,7 @@ def main():
             opcao31 = input("")
 
             if opcao31 == "1":
-                print("Insira os detalhes do artigo para adicionar ao mercado (nome, tipologia, preço,quantidade):")
+                print("Insira os detalhes do artigo para adicionar ao mercado (nome, preco, tipologia, quantidade):")
                 nome_artigo_input = input("")
                 artigo_selecionado = None
                 for artigo in Mercado:
@@ -363,7 +382,7 @@ def main():
                     artigo_selecionado.adicionar_artigo()
 
             elif opcao31 == "2":
-                print("Introduza o artigo que deseja ver a tipologia:")
+                print("Introduza o artigo que deseja remover:")
                 nome_artigo_input = input("")
                 artigo_selecionado = None
                 for artigo in Artigo:
@@ -374,7 +393,7 @@ def main():
                     artigo_selecionado.remover_artigo()
 
             elif opcao31 == "3":
-                print("Artigos Disponíveis no Mercado:\n1. xxx \n2. xxx \n3. xxx")
+                fv.listar_artigos()
 
             elif opcao31 == "V" or opcao31 == "v":
                 opcao1 = None
@@ -392,7 +411,5 @@ def main():
             quit()
 
 
-if __name__=="__main__":
-    main()
 if __name__=="__main__":
     main()

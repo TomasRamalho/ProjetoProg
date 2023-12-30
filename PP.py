@@ -6,19 +6,22 @@ class Utilizador:
         self.interesses = interesses
         self.artigos_disponiveis = artigos_disponiveis
         self.pycoins = 50
-        self.avaliacao = 0
-
+        self.avaliacao = []
 
     #Altera os interesses e/ou os artigos de um utilizador
     def editar_conta(self, novos_interesses, novos_artigos):
         self.interesses = novos_interesses
-        self.artigos = novos_artigos
+        if len(novos_artigos)==0:
+            self.novos_artigos = []
+        else:
+            sep = novos_artigos.split("&")
+            self.novos_artigos = [Artigo(*a.split('')) for a in sep]
 
     #Adiciona uma nova avaliação, podendo incluir um comentário
     def deixar_avaliacao(self, estrelas, comentario):
         self.estrelas = estrelas
         self.comentario = comentario
-        avaliacao = {'usuario': usuario, 'estrelas': estrelas, 'comentario': comentario}
+        avaliacao = {'estrelas': estrelas, 'comentario': comentario}
         self.avaliacao.append(avaliacao)
         print(f"Avaliação deixada por {self.utilizador}: {estrelas} estrelas - {comentario}")
 
@@ -30,16 +33,12 @@ class Utilizador:
 
     #Apresenta todos os interesses
     def mostrar_interesses(self):
-        print("Introduza um nome de utilizador para consultar os seus interesses:")
-        mostrar_interesses = input("")
-        print(f"Interesses de {self.mostrar_insteresses}: {', '.join(self.interesses)}")
+        print(f"Interesses: {', '.join(self.interesses)}")
 
     #Apresenta todos os artigos
     def mostrar_artigos(self):
-        print(f"Artigos disponíveis para troca por {self.username}:")
-        for artigo, preco in self.artigos_disponiveis.items():
-            print(f"  - {artigo}: {preco} PyCoins")
-            
+        print(f": {', '.join(self.artigos_disponiveis)}")
+
     #Altera o número de pycoins
     def alterar_pycoins(self, numero_pycoins):
         self.numero_pycoins = numero_pycoins
@@ -47,16 +46,19 @@ class Utilizador:
 
     #Apresenta o número de pycoins
     def mostrar_pycoins(self):
-        print("Introduza um nome de utilizador para consultar os seus Pycoins:")
-        mostrar_pycoins_nome = input("")
         print(f"{self.nome} tem {self.pycoins} PyCoins.")
-        
 
-class Artigos:
+    def encontrar_utilizador(utilizador,nome):
+        for utilizador in Utilizador:
+            if utilizador.nome == nome:
+                return utilizador
+        return None
+
+class Artigo:
 
     #Construtor
-    def __init__(self, nome, preco, tipologia, quantidade):
-        self.nome = nome
+    def __init__(self, nome_artigo, preco, tipologia, quantidade):
+        self.nome_artigo = nome_artigo
         self.preco = preco
         self.tipologia = tipologia
         self.quantidade = quantidade
@@ -67,16 +69,15 @@ class Artigos:
 
     #Altera o preço de um artigo de acordo com a percentagem dada
     def ajustar_preco(self, percentagem_alteracao):
-        self.percentagem_alteracao = percentagem_alteracao
-
+        self.preco = self.preco * percentagem_alteracao
 
     #Altera o preço para o novo preço recebido
     def editar_preco(self, preco):
-        pass
+        self.preco = preco
 
     #Apresenta o preço do artigo
     def mostrar_preco(self):
-        pass
+        return self.preco
 
     #Altera a quantidade
     def editar_quantidade(self, nova_quantidade):
@@ -84,7 +85,7 @@ class Artigos:
 
     #Apresenta a quantidade do artigo
     def mostrar_quantidade(self):
-        pass
+        return self.quantidade
 
     #Altera a tipologia
     def editar_tipo (self, novo_tipo):
@@ -92,35 +93,50 @@ class Artigos:
 
     #Apresenta a tipologia do artigo
     def mostrar_tipo (self):
-        pass
+        return self.tipologia
+    
+    def encontrar_artigo(artigos_disponiveis,nome_artigo):
+        for artigos_disponiveis in Artigo:
+            if artigos_disponiveis.nome_artigo == nome_artigo:
+                return artigos_disponiveis
+        return None
 
 class FeiraVirtual:
 
     #Construtor
     def __init__(self):
-        self.utilizador = []
-        self.artigos_disponíveis = {}
+        self.utilizadores = []
+        self.artigos_disponiveis = {}
 
     #Adiciona um novo utilizador recebendo o nome, interesses e artigos
-    def registar_utilizador (self, nome, interesses, artigos_disponiveis):
-        novo_utilizador = Utilizador(nome, interesses, artigos_disponiveis)
-        self.utilizador.append(novo_utilizador)
-
+    def registar_utilizador(self,nome,interesses,artigos_disponiveis):
+        self.utilizadores.append(Utilizador(nome,interesses,artigos_disponiveis))
+        
     #Importa uma lista de utilizadores a partir de um ficheiro
-    def importar_utilizadores(self):
-        Utilizadores = open("biblioteca.txt","r")
-        linhas = Utilizadores.split("\n")[1:]
+    def importar_utilizadores(self,nome_ficheiro):
+        Utilizador = open(nome_ficheiro,"r")
+        texto = Utilizador.read()
+        linhas = texto.split("\n")[1:]
         for linha in linhas:
-        partes = linha.split(";")
-        nome = partes[0]
-        interesses = eval(partes[1]) if partes[1] else []
-        artigos = eval(partes[2])
-
-        FeiraVirtual.registar_utilizador(nome, interesses, artigos)
-
+            partes = linha.split(";")
+            nome = partes[0]
+            interesses = partes[1].strip("[]").split(",") if partes[1] else []
+            artigos_disponiveis = partes[2].strip("[]") if partes[1] else ""
+            if len(artigos_disponiveis)==0:
+                self.artigos = []
+            else:
+                sep = artigos_disponiveis.split("&")
+                self.artigos_disponiveis = [Artigo(*a.split(',')) for a in sep]
+            
+            self.registar_utilizador(nome,interesses,artigos_disponiveis)
+    
     #Importa uma lista de artigos a partir de um ficheiro
     def eliminar_conta(self, nome_utilizador):
-        self.nome_utilizador = nome_utilizador
+        for utilizador in self.utilizadores:
+            if utilizador.nome == nome_utilizador:
+                self.utilizadores.remove(utilizador)
+                print(f"Utilizador {nome_utilizador} removido com sucesso!")
+                break
 
     #Apresenta todos os artigos disponíveis ordenados por preço
     def listar_artigos(self):
@@ -155,11 +171,45 @@ class FeiraVirtual:
     def exportar_utilizadores(self):
         pass
 
+    def mostrar_preco_artigo(self):
+        print("Introduza o nome do artigo que deseja ver o preço:")
+        nome_artigo_input = input("")
+        artigo_selecionado = None
+        for artigo in self.artigos_disponiveis:
+            if artigo.nome_artigo == nome_artigo_input:
+                artigo_selecionado = artigo
+                break
+        if artigo_selecionado:
+            print(f"O preço do artigo é {artigo_selecionado.mostrar_preco()}")
+
+    def mostrar_tipologia_artigo(self):
+        nome_artigo_input = input("Introduza o nome do artigo que deseja ver a tipologia: ")
+        artigo_selecionado = None
+        for artigo in self.artigos_disponiveis:
+            if artigo.nome_artigo == nome_artigo_input:
+                artigo_selecionado = artigo
+                break
+
+        if artigo_selecionado:
+            print(f"A tipologia do artigo é {artigo_selecionado.mostrar_tipo()}")
+        
+    def remover_artigo_do_mercado(self):
+        nome_artigo_input = input("Introduza o nome do artigo que deseja remover do mercado: ")
+        artigo_selecionado = None
+        for artigo in self.mercado.mercado:
+            if artigo.nome_artigo == nome_artigo_input:
+                artigo_selecionado = artigo
+                break
+
+        if artigo_selecionado:
+            self.mercado.remover_artigo(artigo_selecionado)
+
 class Mercado:
 
     #Construtor
     def __init__(self):
         self.mercado = Mercado()
+
     #Adiciona um novo artigo
     def adicionar_artigo(self, artigo):
         self.artigo = artigo
@@ -168,89 +218,181 @@ class Mercado:
     def remover_artigo(self, artigo):
         self.artigo = artigo
 
-    #Mostra o nome, preço e quantidade do artigo recebido
     def mostrar_artigo(self, artigo):
+    #Mostra o nome, preço e quantidade do artigo recebido
         self.artigo = artigo
 
-
 def main():
-    print("Bem-vindo/a à Feira Virtual. Pretende aceder a:\n1 - Utilizadores\n2 - Artigos\n3 - Mercado")
-    opcao1 = int(input())
-    if opcao1 == 1:
-        print("Pretende aceder a:\n1 – Registo de utilizadores\n2 – Alteração de um utilizador\n3 – Eliminação de conta de um utilizador\n4 – Lista de utilizadores\n5 – Mostrar artigos de um utilizador\n6 – Mostrar interesses de um utilizador\n7 – Mostrar Pycoins de um utilizador\nV – Voltar atrás\nS – Sair")
-        opcao11 = input("")
-        if opcao11 == 1:
-            print("1 – Registo manual\n2 – Registo por ficheiro")
-            opcao12 = input("")
-            if opcao12 == 1:
-                pass
-            if opcao12 == 2:
-                while opcao12 < 1 or opcao12 > 2:
-                    opcao12 = input("")
-        elif opcao11 == 2:
-            pass
-        elif opcao11 == 3:
-            pass
-        elif opcao11 == 4:
-            pass
-        elif opcao11 == 5:
-            print("Introduza um utilizador para consultar os seus artigos:")
-            opcao15 = input("")
-            print("Artigo: n, Preço: n, Quantidade: n")
-        elif opcao11 == 6:
-            pass
-        elif opcao11 == 7:
-            pass
-        elif opcao21 := "V":
-            print("Bem-vindo/a à Feira Virtual. Pretende aceder a:\n1 - Utilizadores\n2 - Artigos\n3 - Mercado")
-            opcao1 = input("")
-        elif opcao21 := "S":
-            quit()
-        else:
-            print("Opção inálida")
-            quit()
 
-    elif opcao1 == 2:
-        print("Pretende aceder a: \n1 – Mostrar preço de um artigo\n2 – Mostrar quantidade de um artigo\n3 – Mostrar tipo de um artigo\nV – Voltar atrás\nS – Sair")
-        opcao21 = input("")
-        if opcao21 == 1:
-            pass
-        elif opcao21 == 2:
-            pass
-        elif opcao21 == 3:
-            pass
-        elif opcao21 == "V":
-            print("Bem-vindo/a à Feira Virtual. Pretende aceder a:\n1 - Utilizadores\n2 - Artigos\n3 - Mercado")
-            opcao1 = input("")
-        elif opcao21 == "S":
-            quit()
-        else:
-            print("Opção inálida")
-            quit()
-            
-    elif opcao1 == 3:
-        print("Pretende aceder a:\n1 – Adicionar Artigo ao Mercado\n2 – Remover Artigo do Mercado\n3 – Listar Artigos do Mercado\nV – Voltar atrás\nS – Sair")
-        opcao31 = input("")
-        if opcao31 == 1:
-            print("Insira os detalhes do artigo para adicionar ao mercado (nome, tipologia, preço,quantidade):")
-            opcao311 = input("")
-        elif opcao31 == 2:
-            pass
-        elif opcao31 == 3:
-            print("Artigos Disponíveis no Mercado:\n1. xxx \n2. xxx \n3. xxx")
-        elif opcao31 == "V":
-            print("Bem-vindo/a à Feira Virtual. Pretende aceder a:\n1 - Utilizadores\n2 - Artigos\n3 - Mercado")
-            opcao1 = input("")
-        elif opcao31 == "S":
-            quit()
-        else:
-            print("Insira os detalhes do artigo para adicionar ao mercado (nome, tipologia, preço,quantidade):")
-            opcao31 = input("")
-
-    else:
-        print("Opção inválida")
-        quit()
+    ###artigo = Artigo(nome, preco, tipologia, quantidade)
+    fv = FeiraVirtual()
     
 
+    while 1:
+
+        opcao1 = None
+
+        if not opcao1:
+            print("Bem-vindo/a à Feira Virtual. Pretende aceder a:\n1 - Utilizadores\n2 - Artigos\n3 - Mercado")
+            opcao1 = input("")
+        if opcao1 == "1":
+            print("Pretende aceder a:\n1 – Registo de utilizadores\n2 – Alteração de um utilizador\n3 – Eliminação de conta de um utilizador\n4 – Lista de utilizadores\n5 – Mostrar artigos de um utilizador\n6 – Mostrar interesses de um utilizador\n7 – Mostrar Pycoins de um utilizador\nV – Voltar atrás\nS – Sair")
+            opcao11 = input("")
+
+            if opcao11 == "1":
+                print("1 – Registo manual\n2 – Registo por ficheiro")
+                opcao12 = input("")
+
+                if opcao12 == "1":
+                    nome = input("Introduza o seu nome de utilizador: ")
+                    interesses = input("Introduza os seus interesses: ")
+                    artigos_disponiveis = input("Introduza os seus artigos da forma (nome artigo, preco, tipologia, quantidade):")
+                    fv.utilizadores.append(Utilizador(nome,interesses,artigos_disponiveis))
+                    
+                if opcao12 == "2":
+                    ficheiro = "biblioteca.txt"
+                    fv.importar_utilizadores(ficheiro)
+
+            elif opcao11 == "2":
+                nome_utilizador_input = input("Introduza o nome do utilizador que deseja remover: ")
+                utilizador_selecionado = None
+                for utilizador in fv.utilizadores:
+                    if utilizador.nome == nome_utilizador_input:
+                        utilizador_selecionado = utilizador
+                        break
+
+                if utilizador_selecionado:
+                    novos_interesses = input("Introduza os novos interesses do utilizador (separados por vírgulas): ").split(",")
+                    novos_artigos = input("Introduza os novos artigos do utilizador (separados por vírgulas e & para separar diferentes artigos): ")
+                    utilizador_selecionado.editar_conta(novos_interesses, novos_artigos)
+
+            elif opcao11 == "3":
+                nome_utilizador_input = input("Introduza o nome do utilizador que deseja remover: ")
+                fv.eliminar_conta(nome_utilizador_input)
+
+            elif opcao11 == "4":
+                for utilizador in fv.utilizadores:
+                    print(f"Nome: {utilizador.nome}, Interesses: {', '.join(utilizador.interesses)}")
+
+            elif opcao11 == "5":
+                print("Introduza um utilizador para consultar os seus artigos:")
+                nome_utilizador_input = input("")
+                utilizador_selecionado = None
+                for utilizador in fv.utilizadores:
+                    if utilizador.nome == nome_utilizador_input:
+                        utilizador_selecionado = utilizador
+                        break
+                if utilizador_selecionado:
+                    utilizador_selecionado.mostrar_artigos()
+
+            elif opcao11 == "6":
+                print("Introduza um nome de utilizador para consultar os seus interesses:")
+                nome_utilizador_input = input("")
+                utilizador_selecionado = None
+                for utilizador in fv.utilizadores:
+                    if utilizador.nome == nome_utilizador_input:
+                        utilizador_selecionado = utilizador
+                        break
+                if utilizador_selecionado:
+                    utilizador_selecionado.mostrar_interesses()
+
+            elif opcao11 == "7":
+                print("Introduza um nome de utilizador para consultar os seus pycoins:")
+                nome_utilizador_input = input("")
+                utilizador_selecionado = None
+                for utilizador in fv.utilizadores:
+                    if utilizador.nome == nome_utilizador_input:
+                        utilizador_selecionado = utilizador
+                        break
+                if utilizador_selecionado:
+                    utilizador_selecionado.mostrar_pycoins()
+
+            elif opcao11 == "V" or opcao11 == "v":
+                opcao1 = None
+                main()
+
+            elif opcao11 == "S" or opcao11 == "s":
+                quit()
+
+            else:
+                print("Opção inálida")
+                quit()
+
+        elif opcao1 == "2":
+            print("Pretende aceder a: \n1 – Mostrar preço de um artigo\n2 – Mostrar quantidade de um artigo\n3 – Mostrar tipo de um artigo\nV – Voltar atrás\nS – Sair")
+            opcao21 = input("")
+
+            if opcao21 == "1":
+                fv.mostrar_preco_artigo()
+                
+
+            elif opcao21 == "2":
+                print("Introduza o artigo que deseja ver a quantidade:")
+                nome_artigo_input = input("")
+                # Encontrar o artigo pelo nome
+                for artigo in fv.artigos_disponiveis:
+                      pass                  
+
+            elif opcao21 == "3":
+                fv.mostrar_tipologia_artigo()
+
+            elif opcao21 == "V" or opcao21 == "v":
+                opcao1 = None
+                main()
+
+            elif opcao21 == "S" or opcao21 == "s":
+                quit()
+
+            else:
+                print("Opção inválida")
+                quit()
+                
+        elif opcao1 == "3":
+            print("Pretende aceder a:\n1 – Adicionar Artigo ao Mercado\n2 – Remover Artigo do Mercado\n3 – Listar Artigos do Mercado\nV – Voltar atrás\nS – Sair")
+            opcao31 = input("")
+
+            if opcao31 == "1":
+                print("Insira os detalhes do artigo para adicionar ao mercado (nome, tipologia, preço,quantidade):")
+                nome_artigo_input = input("")
+                artigo_selecionado = None
+                for artigo in Mercado:
+                    if utilizador.nome == nome_artigo_input:
+                        artigo_selecionado = artigo
+                        break
+                if artigo_selecionado:
+                    artigo_selecionado.adicionar_artigo()
+
+            elif opcao31 == "2":
+                print("Introduza o artigo que deseja ver a tipologia:")
+                nome_artigo_input = input("")
+                artigo_selecionado = None
+                for artigo in Artigo:
+                    if utilizador.nome == nome_artigo_input:
+                        artigo_selecionado = artigo
+                        break
+                if artigo_selecionado:
+                    artigo_selecionado.remover_artigo()
+
+            elif opcao31 == "3":
+                print("Artigos Disponíveis no Mercado:\n1. xxx \n2. xxx \n3. xxx")
+
+            elif opcao31 == "V" or opcao31 == "v":
+                opcao1 = None
+                main()
+
+            elif opcao31 == "S" or opcao31 == "s":
+                quit()
+
+            else:
+                print("Opção inválida")
+                quit()
+
+        else:
+            print("Opção inválida")
+            quit()
+
+
+if __name__=="__main__":
+    main()
 if __name__=="__main__":
     main()
